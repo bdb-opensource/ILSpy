@@ -55,7 +55,8 @@ namespace ICSharpCode.ILSpy
 					Environment.Exit(0);
 				}
 			}
-			InitializeComponent();
+
+            InitializeComponent();
 			
 			var catalog = new AggregateCatalog();
 			catalog.Catalogs.Add(new AssemblyCatalog(typeof(App).Assembly));

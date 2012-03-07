@@ -29,6 +29,7 @@ namespace ICSharpCode.ILSpy
 		public string NavigateTo;
 		public string Language;
 		public bool NoActivate;
+        public bool CommandLineOutput;
 		
 		public CommandLineArguments(IEnumerable<string> arguments)
 		{
@@ -36,16 +37,18 @@ namespace ICSharpCode.ILSpy
 				if (arg.Length == 0)
 					continue;
 				if (arg[0] == '/') {
-					if (arg.Equals("/singleInstance", StringComparison.OrdinalIgnoreCase))
-						this.SingleInstance = true;
-					else if (arg.Equals("/separate", StringComparison.OrdinalIgnoreCase))
-						this.SingleInstance = false;
-					else if (arg.StartsWith("/navigateTo:", StringComparison.OrdinalIgnoreCase))
-						this.NavigateTo = arg.Substring("/navigateTo:".Length);
-					else if (arg.StartsWith("/language:", StringComparison.OrdinalIgnoreCase))
-						this.Language = arg.Substring("/language:".Length);
-					else if (arg.Equals("/noActivate", StringComparison.OrdinalIgnoreCase))
-						this.NoActivate = true;
+                    if (arg.Equals("/singleInstance", StringComparison.OrdinalIgnoreCase))
+                        this.SingleInstance = true;
+                    else if (arg.Equals("/separate", StringComparison.OrdinalIgnoreCase))
+                        this.SingleInstance = false;
+                    else if (arg.StartsWith("/navigateTo:", StringComparison.OrdinalIgnoreCase))
+                        this.NavigateTo = arg.Substring("/navigateTo:".Length);
+                    else if (arg.StartsWith("/language:", StringComparison.OrdinalIgnoreCase))
+                        this.Language = arg.Substring("/language:".Length);
+                    else if (arg.Equals("/noActivate", StringComparison.OrdinalIgnoreCase))
+                        this.NoActivate = true;
+                    else if (arg.Equals("/out", StringComparison.OrdinalIgnoreCase))
+                        this.CommandLineOutput = true;
 				} else {
 					this.AssembliesToLoad.Add(arg);
 				}

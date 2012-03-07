@@ -252,6 +252,19 @@ namespace ICSharpCode.ILSpy
 			}
 			if (args.Language != null)
 				sessionSettings.FilterSettings.Language = Languages.GetLanguage(args.Language);
+
+            if (App.CommandLineArguments.CommandLineOutput)
+            {
+                foreach (var asm in commandLineLoadedAssemblies)
+                {
+                    Console.Error.WriteLine("Dumping: " + asm.FileName);
+                    Console.Error.Flush();
+                    new CSharpLanguage().DecompileAssembly(asm, new Decompiler.PlainTextOutput(Console.Out), new DecompilationOptions { FullDecompilation = true, SaveAsProjectDirectory = null});
+                }
+                Console.Out.Flush();
+                Application.Current.MainWindow.Close();
+            }
+
 			return true;
 		}
 		
@@ -302,14 +315,14 @@ namespace ICSharpCode.ILSpy
 		{
 			ILSpySettings spySettings = this.spySettings;
 			this.spySettings = null;
-			
-			// Load AssemblyList only in Loaded event so that WPF is initialized before we start the CPU-heavy stuff.
-			// This makes the UI come up a bit faster.
-			this.assemblyList = assemblyListManager.LoadList(spySettings, sessionSettings.ActiveAssemblyList);
-			
-			HandleCommandLineArguments(App.CommandLineArguments);
-			
-			if (assemblyList.GetAssemblies().Length == 0
+
+            // Load AssemblyList only in Loaded event so that WPF is initialized before we start the CPU-heavy stuff.
+            // This makes the UI come up a bit faster.
+            this.assemblyList = assemblyListManager.LoadList(spySettings, sessionSettings.ActiveAssemblyList);
+
+            HandleCommandLineArguments(App.CommandLineArguments);
+
+            if (assemblyList.GetAssemblies().Length == 0
 			    && assemblyList.ListName == AssemblyListManager.DefaultListName)
 			{
 				LoadInitialAssemblies();
